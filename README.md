@@ -8,6 +8,8 @@
 
 `https://maig5754-alt.github.io/ptcg-consign-query/`
 
+页面已加 `noindex` 并弱化分享卡片 meta，适合活动页内跳转；**公开链接仍可被直接打开**，无法从技术上禁止复制转发。
+
 ## 本地预览
 
 用浏览器直接打开 `index.html`，或：
