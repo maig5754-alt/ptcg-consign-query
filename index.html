@@ -288,7 +288,16 @@
       function escapeAttr(s) { return escapeHtml(s).replace(/'/g, '&#39;'); }
 
       function seriesPool() {
-        return uniqueSorted(normalized.map(function (d) { return d.series; }));
+        const present = {};
+        normalized.forEach(function (d) { present[d.series] = true; });
+        const preferred = Array.isArray(window.SERIES_ORDER) ? window.SERIES_ORDER : [];
+        const ordered = preferred.filter(function (s) { return present[s]; });
+        const rest = uniqueSorted(Object.keys(present).filter(function (s) {
+          return ordered.indexOf(s) < 0 && s !== '未标注';
+        }));
+        const out = ordered.concat(rest);
+        if (present['未标注'] && out.indexOf('未标注') < 0) out.push('未标注');
+        return out;
       }
 
       function rarityPool(series) {

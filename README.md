@@ -31,7 +31,7 @@ python3 -m http.server 8080
 | `name` | SPU名称 |
 | `card` | 卡片名称 |
 | `code` | 编号，如 `CSV10C-017`；可空 |
-| `series` | 系列码，一般从编号前缀来，如 `CSV10C`；无编号用 `未标注` |
+| `series` | 系列全称，如 `CSV10C 共逐荣光`；无系列用 `未标注`。下拉按 `SERIES_ORDER`（发售日从新到旧） |
 | `rarity` | 稀有度原文，多值可用逗号，如 `PR,RR` |
 | `rarities` | 拆开后的数组，如 `["PR","RR"]`（可省略，页面会从 `rarity` 拆） |
 | `img` | 主图 CDN URL；可先空，再跑抓图脚本补 |
