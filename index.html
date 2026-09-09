@@ -253,8 +253,15 @@
           rarity: d.rarity || '',
           rarities: rarities,
           img: d.img || '',
+          created: d.created || '',
+          sale_date: d.sale_date || '',
           _i: idx
         };
+      }).sort(function (a, b) {
+        // 从新到旧：created > sale_date > 原下标
+        if (a.created !== b.created) return a.created < b.created ? 1 : -1;
+        if (a.sale_date !== b.sale_date) return a.sale_date < b.sale_date ? 1 : -1;
+        return a._i - b._i;
       });
 
       const seriesSelect = document.getElementById('seriesSelect');
