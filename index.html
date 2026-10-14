@@ -258,9 +258,10 @@
           _i: idx
         };
       }).sort(function (a, b) {
-        // 从新到旧：created > sale_date > 原下标
-        if (a.created !== b.created) return a.created < b.created ? 1 : -1;
-        if (a.sale_date !== b.sale_date) return a.sale_date < b.sale_date ? 1 : -1;
+        // 从新到旧：双方都有 created 时按创建时间；否则用 SPU id（大致随时间递增）
+        if (a.created && b.created && a.created !== b.created) return a.created < b.created ? 1 : -1;
+        if (a.sale_date && b.sale_date && a.sale_date !== b.sale_date) return a.sale_date < b.sale_date ? 1 : -1;
+        if (a.spu !== b.spu) return a.spu < b.spu ? 1 : -1;
         return a._i - b._i;
       });
 
