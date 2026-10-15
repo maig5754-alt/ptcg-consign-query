@@ -252,15 +252,32 @@
           series: d.series || '未标注',
           rarity: d.rarity || '',
           rarities: rarities,
+          tier: d.tier || '',
           img: d.img || '',
           created: d.created || '',
           sale_date: d.sale_date || '',
           _i: idx
         };
-      }).sort(function (a, b) {
-        // 从新到旧：双方都有 created 时按创建时间；否则用 SPU id（大致随时间递增）
-        if (a.created && b.created && a.created !== b.created) return a.created < b.created ? 1 : -1;
-        if (a.sale_date && b.sale_date && a.sale_date !== b.sale_date) return a.sale_date < b.sale_date ? 1 : -1;
+      });
+
+      const TIER_ORDER = ['T0', '断货', 'T1', '促挂单', '偏紧', '小量'];
+      const seriesRankList = {};
+      (Array.isArray(window.SERIES_ORDER) ? window.SERIES_ORDER : []).forEach(function (s, i) {
+        seriesRankList[s] = i;
+      });
+      normalized.sort(function (a, b) {
+        const ta = TIER_ORDER.indexOf(a.tier);
+        const tb = TIER_ORDER.indexOf(b.tier);
+        const ra = ta < 0 ? 99 : ta;
+        const rb = tb < 0 ? 99 : tb;
+        if (ra !== rb) return ra - rb;
+        const sa = seriesRankList[a.series];
+        const sb = seriesRankList[b.series];
+        const ia = sa == null ? 99 : sa;
+        const ib = sb == null ? 99 : sb;
+        if (ia !== ib) return ia - ib;
+        if (a.name !== b.name) return String(a.name).localeCompare(String(b.name), 'zh');
+        if (a.code !== b.code) return String(a.code).localeCompare(String(b.code), 'zh');
         if (a.spu !== b.spu) return a.spu < b.spu ? 1 : -1;
         return a._i - b._i;
       });
